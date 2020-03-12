@@ -191,6 +191,7 @@ namespace LojaCL
                 cmditens.Parameters.AddWithValue("@valor_total", SqlDbType.Decimal).Value = Convert.ToDecimal(dr.Cells[4].Value);
                 if(con.State == ConnectionState.Open)
                 {
+                    //Fecho o banco de dados
                     con.Close();
                 }
                 con.Open();
