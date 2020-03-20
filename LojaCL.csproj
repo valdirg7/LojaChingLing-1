@@ -58,6 +58,12 @@
     <Compile Include="FrmCrudProduto.Designer.cs">
       <DependentUpon>FrmCrudProduto.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmCrudUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCrudUsuario.Designer.cs">
+      <DependentUpon>FrmCrudUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCrudProduto.resx">
       <DependentUpon>FrmCrudProduto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCrudUsuario.resx">
+      <DependentUpon>FrmCrudUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>

@@ -59,5 +59,11 @@ namespace LojaCL
             FrmVenda ven = new FrmVenda();
             ven.Show();
         }
+
+        private void usuáriosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmCrudUsuario usu = new FrmCrudUsuario();
+            usu.Show();
+        }
     }
 }

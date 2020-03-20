@@ -171,6 +171,10 @@ namespace LojaCL
 
         private void btnFinalizar_Click(object sender, EventArgs e)
         {
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
             con.Open();
             SqlCommand cmd = new SqlCommand("InserirVenda", con);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -184,6 +188,12 @@ namespace LojaCL
             {
                 SqlCommand cmditens = new SqlCommand("InserirItens", con);
                 cmditens.CommandType = CommandType.StoredProcedure;
+                //aqui começo a subtrair do meu estoque
+                string ven = "update produto set quantidade = (quantidade - @quantidade2) from produto where Id = @id_produto2";
+                SqlCommand cmditemvenda = new SqlCommand(ven, con);
+                cmditemvenda.Parameters.AddWithValue("@quantidade2", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[2].Value);
+                cmditemvenda.Parameters.AddWithValue("@id_produto2", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[0].Value);
+                //termina a subtração do estoque
                 cmditens.Parameters.AddWithValue("@quantidade", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[2].Value);
                 cmditens.Parameters.AddWithValue("@id_produto", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[0].Value);
                 cmditens.Parameters.AddWithValue("@id_venda", SqlDbType.Int).Value = idvenda2;
@@ -196,6 +206,7 @@ namespace LojaCL
                 }
                 con.Open();
                 cmditens.ExecuteNonQuery();
+                cmditemvenda.ExecuteNonQuery();
                 con.Close();
             }
             MessageBox.Show("Venda realizada com sucesso!", "Venda", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -214,6 +225,32 @@ namespace LojaCL
             //limpando o DataGridView
             dgvVenda.Rows.Clear();
             dgvVenda.Refresh();
+        }
+
+        private void txtQuantidade_Leave(object sender, EventArgs e)
+        {
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+            con.Open();
+            SqlCommand cmd = new SqlCommand("LocalizarProduto", con);
+            cmd.Parameters.AddWithValue("@Id", cbxProduto.SelectedValue);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader rd = cmd.ExecuteReader();
+            int valor1 = 0;
+            bool conversaoSucedida = int.TryParse(txtQuantidade.Text, out valor1);
+            if (rd.Read())
+            {
+                int valor2 = Convert.ToInt32(rd["quantidade"].ToString());
+                if (valor1 > valor2)
+                {
+                    MessageBox.Show("Não possui quantidade suficiente em estoque!", "Estoque", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    con.Close();
+                    txtQuantidade.Text = "";
+                    txtQuantidade.Focus();
+                }
+            }
         }
     }
 }
