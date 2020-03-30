@@ -33,15 +33,14 @@ namespace LojaCL
         {
             try
             {
-                    String str = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Programas\\LojaCL\\DbLoja.mdf;Integrated Security=True;Connect Timeout=30";
-                    String query = "select * from cliente";
-                    SqlConnection con = new SqlConnection(str);
-                    SqlCommand cmd = new SqlCommand(query, con);
-                    con.Open();
-                    DataSet ds = new DataSet();
+                SqlConnection con = Conexao.obterConexao();
+                String query = "select * from cliente";
+                SqlCommand cmd = new SqlCommand(query, con);
+                Conexao.obterConexao();
+                DataSet ds = new DataSet();
                 MessageBox.Show("Conectado ao Banco de Dados com Sucesso!", "Teste de Conexão", MessageBoxButtons.OK, MessageBoxIcon.Information) ;
-                    con.Close();
-                }
+                Conexao.fecharConexao();
+            }
             catch (Exception er)
             {
                 MessageBox.Show(er.Message);
